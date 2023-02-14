@@ -4,8 +4,7 @@
 //========================================================================
 int main()
 {
-	ofSetupOpenGL(1024, 768, OF_WINDOW);			// <-------- setup the GL context
-
+	// setup the GL context
 	ofGLWindowSettings glSettings {};
 	glSettings.setSize(1024, 768);
 	glSettings.windowMode = OF_WINDOW;
