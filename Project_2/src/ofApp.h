@@ -22,8 +22,8 @@ public:
 	void gotMessage(ofMessage msg);
 
 private:
-
-
+	ofShader firstShader;
+	ofMesh susMesh;
 	bool shadersNeedReload { true };
 	void reloadShaders();
 };
