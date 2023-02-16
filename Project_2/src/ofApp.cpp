@@ -35,18 +35,18 @@ void ofApp::draw()
 
 	time += ofGetLastFrameTime() * 100;
 	mat4 susModel { translate(vec3(0, 0, -3)) * rotate(radians(-time), vec3(0, 1, 0)) };
-	mat4 susProj { perspective(radians(100.0f), aspect, 0.01f, 10.0f) };
+	mat4 projection { perspective(radians(100.0f), aspect, 0.01f, 10.0f) };
 
 
 	susShader.begin();
-	susShader.setUniformMatrix4f("mvp", susProj * view * susModel);
+	susShader.setUniformMatrix4f("mvp", projection * view * susModel);
 	susMesh.draw();
 	susShader.end();
 
-	mat4 sceneModel { translate(vec3(0,0,-5)) * rotate(radians(245.0f), vec3(0, 1, 0)) * rotate(radians(-10.0f),vec3(1,0,0)) };
-	mat4 sceneProj { perspective(radians(90.0f), aspect, 0.01f, 10.0f) };
+	mat4 sceneModel { translate(vec3(-2,0,-5)) * rotate(radians(245.0f), vec3(0, 1, 0)) * rotate(radians(-10.0f),vec3(1,0,0)) };
+	// mat4 sceneProj { perspective(radians(90.0f), aspect, 0.01f, 10.0f) };
 	sceneShader.begin();
-	sceneShader.setUniformMatrix4f("mvp", susProj * view * sceneModel);
+	sceneShader.setUniformMatrix4f("mvp", projection * view * sceneModel);
 	sceneMesh.draw();
 	sceneShader.end();
 }
