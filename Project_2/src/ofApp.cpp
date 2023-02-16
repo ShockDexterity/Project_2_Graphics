@@ -25,16 +25,17 @@ void ofApp::draw()
 {
 	using namespace glm;
 
-	float width{ static_cast<float>(ofGetViewportWidth()) };
-	float height{ static_cast<float>(ofGetViewportHeight()) };
-	float aspect{ width / height };
+	float width { static_cast<float>(ofGetViewportWidth()) };
+	float height { static_cast<float>(ofGetViewportHeight()) };
+	float aspect { width / height };
 
-	mat4 model{ translate(vec3(0, 0, -5)) * rotate(radians(180.0f), vec3(1, 1, 1)) };
-	mat4 view{};
-	mat4 proj{ perspective(radians(100.0f), aspect, 0.01f, 10.0f) };
+	mat4 view {};
+
+	mat4 susModel { translate(vec3(0, 0, -5)) * rotate(radians(180.0f), vec3(1, 1, 1)) };
+	mat4 susProj { perspective(radians(100.0f), aspect, 0.01f, 10.0f) };
 
 	firstShader.begin();
-	firstShader.setUniformMatrix4f("mvp", proj * view * model);
+	firstShader.setUniformMatrix4f("mvp", susProj * view * susModel);
 	susMesh.draw();
 	firstShader.end();
 
