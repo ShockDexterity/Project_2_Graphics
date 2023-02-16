@@ -2,7 +2,8 @@
 
 void ofApp::reloadShaders()
 {
-	firstShader.load("shaders/temp.vert", "shaders/temp.frag");
+	susShader.load("shaders/temp.vert", "shaders/temp.frag");
+	sceneShader.load("shaders/temp.vert", "shaders/temp.frag");
 	shadersNeedReload = false;
 }
 
@@ -12,6 +13,7 @@ void ofApp::setup()
 	ofDisableArbTex();
 	ofEnableDepthTest();
 	susMesh.load("models/susImposter.ply");
+	sceneMesh.load("models/scene.ply");
 }
 
 //--------------------------------------------------------------
@@ -34,11 +36,19 @@ void ofApp::draw()
 	mat4 susModel { translate(vec3(0, 0, -5)) * rotate(radians(180.0f), vec3(1, 1, 1)) };
 	mat4 susProj { perspective(radians(100.0f), aspect, 0.01f, 10.0f) };
 
-	firstShader.begin();
-	firstShader.setUniformMatrix4f("mvp", susProj * view * susModel);
+	susShader.begin();
+	susShader.setUniformMatrix4f("mvp", susProj * view * susModel);
 	susMesh.draw();
-	firstShader.end();
+	susShader.end();
 
+	time += ofGetLastFrameTime();
+	if (time > 10.0f) { time = 0.0f; }
+
+	mat4 sceneModel { translate(vec3(0,0,-time)) };
+	sceneShader.begin();
+	sceneShader.setUniformMatrix4f("mvp", sceneModel * view);
+	sceneMesh.draw();
+	sceneShader.end();
 }
 
 //--------------------------------------------------------------
