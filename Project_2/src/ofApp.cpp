@@ -46,7 +46,7 @@ void ofApp::draw()
 	mat4 sceneModel { translate(vec3(0,0,-5)) * rotate(radians(245.0f), vec3(0, 1, 0)) * rotate(radians(-10.0f),vec3(1,0,0)) };
 	mat4 sceneProj { perspective(radians(90.0f), aspect, 0.01f, 10.0f) };
 	sceneShader.begin();
-	sceneShader.setUniformMatrix4f("mvp", sceneProj * view * sceneModel);
+	sceneShader.setUniformMatrix4f("mvp", susProj * view * sceneModel);
 	sceneMesh.draw();
 	sceneShader.end();
 }
