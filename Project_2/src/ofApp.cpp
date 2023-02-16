@@ -25,9 +25,9 @@ void ofApp::draw()
 {
 	using namespace glm;
 
-	float width { static_cast<float>(ofGetViewportWidth()) };
-	float height { static_cast<float>(ofGetViewportHeight()) };
-	float aspect { width / height };
+	const float width { static_cast<float>(ofGetViewportWidth()) };
+	const float height { static_cast<float>(ofGetViewportHeight()) };
+	const float aspect { width / height };
 
 	mat4 view {};
 
