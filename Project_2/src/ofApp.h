@@ -2,6 +2,12 @@
 
 #include "ofMain.h"
 
+struct CameraData
+{
+	glm::vec3 position;
+	float rotation;
+};
+
 class ofApp : public ofBaseApp
 {
 public:
@@ -32,4 +38,10 @@ private:
 
 	bool shadersNeedReload { true };
 	void reloadShaders();
+
+	CameraData camera;
+	glm::mat4 buildViewMatrix(CameraData cam)
+	{
+		return glm::mat4();
+	}
 };
