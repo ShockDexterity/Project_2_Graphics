@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
+#include <GLFW/glfw3.h>
+
 
 struct CameraData
 {
@@ -39,9 +41,13 @@ private:
 	bool shadersNeedReload { true };
 	void reloadShaders();
 
-	CameraData camera;
-	glm::mat4 buildViewMatrix(CameraData cam)
-	{
-		return glm::mat4();
-	}
+	//camera stuff
+	void processInput(GLFWwindow* window);
+
+	glm::vec3 cameraPos{ glm::vec3(0.0f, 0.0f, 3.0f) };
+	glm::vec3 cameraFront{ glm::vec3(0.0f, 0.0f, -1.0f) };
+	glm::vec3 cameraUp{ glm::vec3(0.0f, 1.0f, 0.0f) };
+
+	float delta{};
+
 };

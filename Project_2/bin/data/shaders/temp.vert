@@ -7,6 +7,7 @@ layout (location = 3) in vec2 uv;
 uniform mat4 mvp;
 out vec3 fragNormal;
 out vec2 fragUV;
+uniform mat4 camView;
 
 void main()
 {
