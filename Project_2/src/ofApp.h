@@ -41,13 +41,22 @@ private:
 	bool shadersNeedReload { true };
 	void reloadShaders();
 
-	//camera stuff
-	void processInput(GLFWwindow* window);
+	// previous mouse pos
+	int prevX{ 0 }, prevY{ 0 }; 
 
-	glm::vec3 cameraPos{ glm::vec3(0.0f, 0.0f, 3.0f) };
-	glm::vec3 cameraFront{ glm::vec3(0.0f, 0.0f, -1.0f) };
-	glm::vec3 cameraUp{ glm::vec3(0.0f, 1.0f, 0.0f) };
+	//How many radians of rotation correspon to a single pixel
+	float mouseSensitivity{ 0.02f };
 
-	float delta{};
+	// current head direction of the camera in radians
+	float cameraHead{ 0 }; 
+
+	// velocity of camera (from WASD)
+	glm::vec3 velocity {};
+
+	// position of camera in world space
+	glm::vec3 position {0, 0, 1};
+
+	//update camera rotation based on mouse movement
+	void updateCameraRotation(float dx, float dy);
 
 };

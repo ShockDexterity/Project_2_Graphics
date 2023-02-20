@@ -7,17 +7,10 @@ void ofApp::reloadShaders()
 	shadersNeedReload = false;
 }
 
-void ofApp::processInput(GLFWwindow* window)
+void ofApp::updateCameraRotation(float dx, float dy)
 {
-	float cameraSpeed = static_cast<float>(2.5);
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		cameraPos += cameraSpeed * cameraFront;
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		cameraPos -= cameraSpeed * cameraFront;
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	using namespace glm;
+	cameraHead += dx;
 }
 
 //--------------------------------------------------------------
@@ -34,9 +27,18 @@ void ofApp::update()
 {
 	auto window{ ofGetCurrentWindow() };
 	if (shadersNeedReload) { reloadShaders(); }
-	delta = ofGetLastFrameTime();
-	processInput(dynamic_pointer_cast<ofAppGLFWWindow>(window)->getGLFWWindow());
-	glm::mat4 camView = lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+
+	using namespace glm;
+
+	// calculate world soace velocity
+	vec3 velocityWorldSpace{ mat3(rotate(-cameraHead, vec3(0, 1, 0))) * velocity };
+
+	// time since last frame
+	float dt{ static_cast<float>(ofGetLastFrameTime()) };
+
+	// update position
+	position += velocityWorldSpace * dt;
+
 }
 
 //--------------------------------------------------------------
@@ -48,7 +50,8 @@ void ofApp::draw()
 	const float height{ static_cast<float>(ofGetViewportHeight()) };
 	const float aspect{ width / height };
 
-	mat4 view{};
+
+	mat4 view{rotate(cameraHead, vec3(0, 1, 0)) * translate(-position)};
 
 	time += ofGetLastFrameTime() * 100;
 	mat4 susModel{ translate(vec3(0, 0, -3)) * rotate(radians(-time), vec3(0, 1, 0)) };
@@ -57,7 +60,6 @@ void ofApp::draw()
 
 	susShader.begin();
 	susShader.setUniformMatrix4f("mvp", projection * view * susModel);
-	//susShader.setUniformMatrix4f("camView", camView);
 	susMesh.draw();
 	susShader.end();
 
@@ -73,18 +75,50 @@ void ofApp::draw()
 void ofApp::keyPressed(int key)
 {
 	if (key == '`') { shadersNeedReload = true; }
+
+	if (key == 'w')
+	{
+		velocity.z = -1;
+	}
+	else if (key == 's')
+	{
+		velocity.z = 1;
+	}
+	else if (key == 'a')
+	{
+		velocity.x = -1;
+	}
+	else if (key == 'd')
+	{
+		velocity.x = 1;
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key)
 {
-
+	if (key == 'w' || key == 's')
+	{
+		velocity.z = 0;
+	}
+	else if (key == 'a' || key == 'd')
+	{
+		velocity.x = 0;
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y)
 {
+	if (prevX != 0 && prevY != 0)
+	{
+		//update camera rotation based on mouse movement
+		updateCameraRotation(mouseSensitivity * (x - prevX), mouseSensitivity * (y - prevY));
+	}
 
+	//remember where the mouse was this frame
+	prevX = x;
+	prevY = y;
 }
 
 //--------------------------------------------------------------
