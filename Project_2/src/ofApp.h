@@ -48,7 +48,11 @@ private:
 	float mouseSensitivity{ 0.02f };
 
 	// current head direction of the camera in radians
-	float cameraHead{ 0 }; 
+	float cameraHead { 0 }; 
+
+	float cameraPitch { 0 };
+
+	glm::vec2 cameraRotation{};
 
 	// velocity of camera (from WASD)
 	glm::vec3 velocity {};

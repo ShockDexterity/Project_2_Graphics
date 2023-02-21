@@ -11,6 +11,9 @@ void ofApp::updateCameraRotation(float dx, float dy)
 {
 	using namespace glm;
 	cameraHead += dx;
+	cameraPitch += dy;
+
+	//cameraRotation = vec2( - cameraHead, cameraPitch );
 }
 
 //--------------------------------------------------------------
@@ -30,14 +33,19 @@ void ofApp::update()
 
 	using namespace glm;
 
-	// calculate world soace velocity
+	// calculate world space velocity
 	vec3 velocityWorldSpace{ mat3(rotate(-cameraHead, vec3(0, 1, 0))) * velocity };
+	vec3 velocityCamPitch{ mat3(rotate(cameraPitch, vec3(1, 0 , 0))) * velocity };
+
+	vec3 worldSpace = velocityWorldSpace + velocityCamPitch;
 
 	// time since last frame
 	float dt{ static_cast<float>(ofGetLastFrameTime()) };
 
 	// update position
-	position += velocityWorldSpace * dt;
+	position += worldSpace * dt;
+
+	//torusVBO.drawElements(GL_Triangles, torusVbo.getNmIndices());
 
 }
 
@@ -51,7 +59,7 @@ void ofApp::draw()
 	const float aspect{ width / height };
 
 
-	mat4 view{rotate(cameraHead, vec3(0, 1, 0)) * translate(-position)};
+	mat4 view{rotate(cameraHead, vec3(0, 1, 0)) * rotate(cameraPitch, vec3(1, 0, 0))};
 
 	time += ofGetLastFrameTime() * 100;
 	mat4 susModel{ translate(vec3(0, 0, -3)) * rotate(radians(-time), vec3(0, 1, 0)) };
