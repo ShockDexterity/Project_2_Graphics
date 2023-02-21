@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include <vector>
 #include <GLFW/glfw3.h>
 
 
@@ -31,6 +32,7 @@ public:
 
 private:
 	ofMesh susMesh {};
+	ofVbo susVbo{};
 	ofShader susShader {};
 
 	ofMesh sceneMesh {};
@@ -38,29 +40,31 @@ private:
 
 	float time { 0.0f };
 
-	bool shadersNeedReload { true };
+	bool shadersNeedReload{ true };
 	void reloadShaders();
 
 	// previous mouse pos
-	int prevX{ 0 }, prevY{ 0 }; 
+	int prevX { 0 };
+	int prevY { 0 };
 
 	//How many radians of rotation correspon to a single pixel
-	float mouseSensitivity{ 0.02f };
+	float mouseSensitivity { 0.02f };
 
 	// current head direction of the camera in radians
-	float cameraHead { 0 }; 
+	float cameraHead { 0 };
 
+	//current pitch direction of the camera in radians
 	float cameraPitch { 0 };
-
-	glm::vec2 cameraRotation{};
 
 	// velocity of camera (from WASD)
 	glm::vec3 velocity {};
 
 	// position of camera in world space
-	glm::vec3 position {0, 0, 1};
+	glm::vec3 position { 0, 0, 1 };
 
 	//update camera rotation based on mouse movement
 	void updateCameraRotation(float dx, float dy);
 
+	// we need a lot of mongus models
+	std::vector<ofVbo> mongusModels{};
 };
