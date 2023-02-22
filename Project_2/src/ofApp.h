@@ -4,13 +4,6 @@
 #include <vector>
 #include <GLFW/glfw3.h>
 
-
-struct CameraData
-{
-	glm::vec3 position;
-	float rotation;
-};
-
 class ofApp : public ofBaseApp
 {
 public:
@@ -32,7 +25,7 @@ public:
 
 private:
 	ofMesh susMesh {};
-	ofVbo susVbo{};
+	ofVbo susVbo {};
 	ofShader susShader {};
 
 	ofMesh sceneMesh {};
@@ -40,7 +33,7 @@ private:
 
 	float time { 0.0f };
 
-	bool shadersNeedReload{ true };
+	bool shadersNeedReload { true };
 	void reloadShaders();
 
 	// previous mouse pos
@@ -66,5 +59,5 @@ private:
 	void updateCameraRotation(float dx, float dy);
 
 	// we need a lot of mongus models
-	std::vector<ofVbo> mongusModels{};
+	std::vector<ofVbo> susVbos {};
 };
