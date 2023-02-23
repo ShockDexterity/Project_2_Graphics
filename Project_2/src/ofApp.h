@@ -24,10 +24,12 @@ public:
 	void gotMessage(ofMessage msg);
 
 private:
-	ofMesh susMesh {};
+	// among us mesh and shaders
 	ofVbo susVbo {};
+	ofMesh susMesh {};
 	ofShader susShader {};
 
+	// background scene mesh and shader
 	ofMesh sceneMesh {};
 	ofShader sceneShader {};
 
@@ -40,13 +42,13 @@ private:
 	int prevX { 0 };
 	int prevY { 0 };
 
-	//How many radians of rotation correspon to a single pixel
+	// How many radians of rotation correspon to a single pixel
 	float mouseSensitivity { 0.02f };
 
 	// current head direction of the camera in radians
 	float cameraHead { 0 };
 
-	//current pitch direction of the camera in radians
+	// current pitch direction of the camera in radians
 	float cameraPitch { 0 };
 
 	// velocity of camera (from WASD)
@@ -55,7 +57,7 @@ private:
 	// position of camera in world space
 	glm::vec3 position { 0, 0, 1 };
 
-	//update camera rotation based on mouse movement
+	// update camera rotation based on mouse movement
 	void updateCameraRotation(float dx, float dy);
 
 	// we need a lot of mongus models
