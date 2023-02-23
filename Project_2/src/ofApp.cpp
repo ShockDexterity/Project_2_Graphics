@@ -48,11 +48,12 @@ void ofApp::update()
 	auto window { ofGetCurrentWindow() };
 
 	// calculate world space velocity
-	const vec3 vCamHead { mat3(rotate(-cameraHead, vec3(0, 1, 0))) * velocity };
-	const vec3 vCamPitch { mat3(rotate(cameraPitch, vec3(1, 0 , 0))) * velocity };
+	const mat3 vCamHead { mat3(rotate(-cameraHead, vec3(0, 1, 0)))   };
+	const mat3 vCamPitch { mat3(rotate(-cameraPitch, vec3(1, 0 , 0)))  };
+
 
 	// update position
-	position += (vCamHead + vCamPitch) * dt;
+	position += (vCamPitch * vCamHead) * velocity * dt;
 
 	susVbo.drawElements(GL_TRIANGLES, susVbo.getNumIndices());
 
@@ -73,13 +74,13 @@ void ofApp::draw()
 	const mat4 view { (rotate(cameraHead, vec3(0, 1, 0)) * rotate(cameraPitch, vec3(1, 0, 0))) * translate(-position)};
 	const mat4 projection { perspective(radians(100.0f), aspect, 0.01f, 10.0f) };
 
-	// setting fog
-	// float alpha { smoothstep(0.01f, 10.0f, 5.0f) };
+	const glm::mat4 susModel{ glm::translate(glm::vec3(0, 0, -3)) * glm::rotate(glm::radians(-time), glm::vec3(0, 1, 0)) };
+	const glm::mat4 sceneModel{ glm::translate(glm::vec3(-2,0,-5)) * glm::rotate(glm::radians(245.0f), glm::vec3(0, 1, 0)) * glm::rotate(glm::radians(-10.0f), glm::vec3(1,0,0)) };
 
 	// drawing the amogus model
 	susShader.begin();
-	const mat4 susModel { translate(vec3(0, 0, -3)) * rotate(radians(-time), vec3(0, 1, 0)) };
 	susShader.setUniformMatrix4f("mvp", projection * view * susModel);
+	susShader.setUniformMatrix4f("mv", view * susModel);
 	//susMesh.draw();
 	for (unsigned int i { 0 }; i < susVbos.size(); ++i)
 	{
@@ -87,10 +88,10 @@ void ofApp::draw()
 	}
 	susShader.end();
 
-	mat4 sceneModel { translate(vec3(-2,0,-5)) * rotate(radians(245.0f), vec3(0, 1, 0)) * rotate(radians(-10.0f),vec3(1,0,0)) };
 	// mat4 sceneProj { perspective(radians(90.0f), aspect, 0.01f, 10.0f) };
 	sceneShader.begin();
 	sceneShader.setUniformMatrix4f("mvp", projection * view * sceneModel);
+	sceneShader.setUniformMatrix4f("mv", view * sceneModel);
 	sceneMesh.draw();
 	sceneShader.end();
 }
