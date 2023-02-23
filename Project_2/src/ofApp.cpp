@@ -100,40 +100,16 @@ void ofApp::keyPressed(int key)
 {
 	switch (key)
 	{
-		case '`':
-			shadersNeedReload = true; break;
-		case 'w':
-			velocity.z = -1; break;
-		case 's':
-			velocity.z = 1; break;
-		case 'a': 
-			velocity.x = -1; break;
-		case 'd': 
-			velocity.x = 1; break;
-		default:
-			break;
-	}
+		case '`': shadersNeedReload = true; break;
 
-	/*if (key == '`')
-	{
-		shadersNeedReload = true;
+		case 'w': velocity.z = -1; break;
+		case 's': velocity.z = 1; break;
+
+		case 'a': velocity.x = -1; break;
+		case 'd': velocity.x = 1; break;
+		
+		default: break;
 	}
-	if (key == 'w')
-	{
-		velocity.z = -1;
-	}
-	else if (key == 's')
-	{
-		velocity.z = 1;
-	}
-	else if (key == 'a')
-	{
-		velocity.x = -1;
-	}
-	else if (key == 'd')
-	{
-		velocity.x = 1;
-	}*/
 }
 
 //--------------------------------------------------------------
@@ -146,16 +122,9 @@ void ofApp::keyReleased(int key)
 
 		case 'a': velocity.x = 0; break;
 		case 'd': velocity.x = 0; break;
-	}
 
-	/*if (key == 'w' || key == 's')
-	{
-		velocity.z = 0;
+		default: break;
 	}
-	else if (key == 'a' || key == 'd')
-	{
-		velocity.x = 0;
-	}*/
 }
 
 //--------------------------------------------------------------
