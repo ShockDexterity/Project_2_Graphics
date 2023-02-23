@@ -31,7 +31,7 @@ void ofApp::setup()
 	Changing the vector to holding Vbo's decreased the load time dramatically.
 	*/
 
-	for (int i { 0 }; i < 6900; ++i)
+	for (int i { 0 }; i < 100; ++i)
 	{
 		susVbos.emplace_back();
 		susVbos.at(i).setMesh(susMesh, GL_STATIC_DRAW);
@@ -70,7 +70,7 @@ void ofApp::draw()
 	time += ofGetLastFrameTime() * 100;
 
 	// constant view and projection for the models
-	const mat4 view { rotate(cameraHead, vec3(0, 1, 0)) * rotate(cameraPitch, vec3(1, 0, 0)) };
+	const mat4 view { (rotate(cameraHead, vec3(0, 1, 0)) * rotate(cameraPitch, vec3(1, 0, 0))) * translate(-position)};
 	const mat4 projection { perspective(radians(100.0f), aspect, 0.01f, 10.0f) };
 
 	// setting fog
