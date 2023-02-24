@@ -28,10 +28,10 @@ void ofApp::setup()
 
 	/*
 	Loading 6900 ofMesh's at once took a very long time
-	Changing the vector to holding Vbo's decreased the load time dramatically.
+	Changing the vector to hold Vbo's decreased the load time dramatically.
 	*/
 
-	/*for (int i { 0 }; i < 100; ++i)
+	/*for (int i { 0 }; i < 6900; ++i)
 	{
 		susVbos.emplace_back();
 		susVbos.at(i).setMesh(susMesh, GL_STATIC_DRAW);
@@ -49,12 +49,10 @@ void ofApp::update()
 
 	// calculate world space velocity
 	const mat3 vCamHead { mat3(rotate(-cameraHead, vec3(0, 1, 0))) };
-	const mat3 vCamPitch { mat3(rotate(-cameraPitch, vec3(1, 0, 0))) };
+	const mat3 vCamPitch { mat3(rotate(-cameraPitch, vec3(0, 1, 0))) };
 
 	// update position
 	position += (vCamPitch * vCamHead) * velocity * dt;
-
-	susVbo.drawElements(GL_TRIANGLES, susVbo.getNumIndices());
 
 	if (shadersNeedReload) { reloadShaders(); }
 }
@@ -67,6 +65,7 @@ void ofApp::draw()
 	const float height { static_cast<float>(ofGetViewportHeight()) };
 	const float aspect { width / height };
 
+	// upating time for rotation
 	time += ofGetLastFrameTime() * 100;
 
 	// constant view and projection for the models
@@ -76,7 +75,7 @@ void ofApp::draw()
 	const mat4 susModel { glm::translate(vec3(0, 0, -3)) * rotate(radians(-time), vec3(0, 1, 0)) };
 	const mat4 sceneModel { glm::translate(vec3(-2,0,-5)) * rotate(radians(245.0f), vec3(0, 1, 0)) * rotate(radians(-10.0f), vec3(1,0,0)) };
 
-	// drawing the amogus model
+	// drawing the among us model
 	{
 		//***********************************************************************************************************
 
@@ -84,7 +83,7 @@ void ofApp::draw()
 			This is the proper stress test here. When trying to draw almost 7000 meshes, the frames per second
 			were very low and was near impossible to move anywhere because the dt was so high, often overshooting
 			wherever you meant to end up.
-			
+
 			When we switched to drawing Vbo's, the frames did certainly increase however there was still noticable lag,
 			most likely because there are still almost 7000 different models being drawn on the screen, even if the fog
 			reduces their alpha to 0.
@@ -110,7 +109,7 @@ void ofApp::draw()
 		susShader.begin();
 		susShader.setUniformMatrix4f("mvp", projection * view * susModel);
 		susShader.setUniformMatrix4f("mv", view * susModel);
-		susVbo.draw(GL_TRIANGLES, 0, susVbo.getNumIndices());
+		susVbo.drawElements(GL_TRIANGLES, susVbo.getNumIndices());
 		susShader.end();
 	}
 
@@ -131,11 +130,14 @@ void ofApp::keyPressed(int key)
 	{
 		case '`': shadersNeedReload = true; break;
 
-		case 'w': velocity.z = -1; break;
-		case 's': velocity.z = 1; break;
-
 		case 'a': velocity.x = -1; break;
 		case 'd': velocity.x = 1; break;
+
+		case 'q': velocity.y = -1; break;
+		case 'e': velocity.y = 1; break;
+
+		case 'w': velocity.z = -1; break;
+		case 's': velocity.z = 1; break;
 
 		default: break;
 	}
@@ -146,28 +148,31 @@ void ofApp::keyReleased(int key)
 {
 	switch (key)
 	{
-		case 'w': velocity.z = 0; break;
-		case 's': velocity.z = 0; break;
-
 		case 'a': velocity.x = 0; break;
 		case 'd': velocity.x = 0; break;
+
+		case 'q': velocity.y = 0; break;
+		case 'e': velocity.y = 0; break;
+
+		case 'w': velocity.z = 0; break;
+		case 's': velocity.z = 0; break;
 
 		default: break;
 	}
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y)
+void ofApp::mouseMoved(int x, int z)
 {
-	if (prevX != 0 && prevY != 0)
+	if (prevX != 0 && prevZ != 0)
 	{
 		//update camera rotation based on mouse movement
-		updateCameraRotation(mouseSensitivity * (x - prevX), mouseSensitivity * (y - prevY));
+		updateCameraRotation(mouseSensitivity * (x - prevX), mouseSensitivity * (z - prevZ));
 	}
 
 	//remember where the mouse was this frame
 	prevX = x;
-	prevY = y;
+	prevZ = z;
 }
 
 //--------------------------------------------------------------

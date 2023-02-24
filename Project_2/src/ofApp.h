@@ -40,7 +40,7 @@ private:
 
 	// previous mouse pos
 	int prevX { 0 };
-	int prevY { 0 };
+	int prevZ { 0 };
 
 	// How many radians of rotation correspon to a single pixel
 	float mouseSensitivity { 0.02f };
