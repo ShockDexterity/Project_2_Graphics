@@ -45,14 +45,14 @@ void ofApp::update()
 	const float dt { static_cast<float>(ofGetLastFrameTime()) };
 
 	// Grabbing the current window
-	auto window { ofGetCurrentWindow() };
+	// auto window { ofGetCurrentWindow() };
 
 	// calculate world space velocity
-	const mat3 vCamHead { mat3(rotate(-cameraHead, vec3(0, 1, 0))) };
-	const mat3 vCamPitch { mat3(rotate(-cameraPitch, vec3(0, 1, 0))) };
+	const mat3 mCamHead { mat3(rotate(-cameraHead, vec3(0, 1, 0))) };
+	const mat3 mCamPitch { mat3(rotate(-cameraPitch, vec3(0, 1, 0))) };
 
 	// update position
-	position += (vCamPitch * vCamHead) * velocity * dt;
+	position += (mCamPitch * mCamHead) * velocity * dt;
 
 	if (shadersNeedReload) { reloadShaders(); }
 }
@@ -162,17 +162,17 @@ void ofApp::keyReleased(int key)
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int z)
+void ofApp::mouseMoved(int x, int y)
 {
-	if (prevX != 0 && prevZ != 0)
+	if (prevX != 0 && prevY != 0)
 	{
 		//update camera rotation based on mouse movement
-		updateCameraRotation(mouseSensitivity * (x - prevX), mouseSensitivity * (z - prevZ));
+		updateCameraRotation(mouseSensitivity * (x - prevX), mouseSensitivity * (y - prevY));
 	}
 
 	//remember where the mouse was this frame
 	prevX = x;
-	prevZ = z;
+	prevY = y;
 }
 
 //--------------------------------------------------------------
