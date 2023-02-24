@@ -63,4 +63,12 @@ private:
 	// we need a lot of mongus models
 	std::vector<ofVbo> susVbos {};
 
+	// x-axis <1, 0, 0>
+	const glm::vec3 vX { 1, 0, 0 };
+
+	// y-axis <0, 1, 0>
+	const glm::vec3 vY { 0, 1, 0 };
+
+	// z-axis <0, 0, 1>
+	const glm::vec3 vZ { 0, 0, 1 };
 };

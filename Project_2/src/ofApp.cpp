@@ -48,8 +48,8 @@ void ofApp::update()
 	// auto window { ofGetCurrentWindow() };
 
 	// calculate world space velocity
-	const mat3 mCamHead { mat3(rotate(-cameraHead, vec3(0, 1, 0))) };
-	const mat3 mCamPitch { mat3(rotate(-cameraPitch, vec3(0, 1, 0))) };
+	const mat3 mCamHead { mat3(rotate(-cameraHead, vY)) };
+	const mat3 mCamPitch { mat3(rotate(-cameraPitch, vY)) };
 
 	// update position
 	position += (mCamPitch * mCamHead) * velocity * dt;
@@ -69,11 +69,11 @@ void ofApp::draw()
 	time += ofGetLastFrameTime() * 100;
 
 	// constant view and projection for the models
-	const mat4 view { (rotate(cameraHead, vec3(0, 1, 0)) * rotate(cameraPitch, vec3(1, 0, 0))) * translate(-position) };
+	const mat4 view { (rotate(cameraHead, vY) * rotate(cameraPitch, vX)) * translate(-position) };
 	const mat4 projection { perspective(radians(100.0f), aspect, 0.01f, 10.0f) };
 
-	const mat4 susModel { glm::translate(vec3(0, 0, -3)) * rotate(radians(-time), vec3(0, 1, 0)) };
-	const mat4 sceneModel { glm::translate(vec3(-2,0,-5)) * rotate(radians(245.0f), vec3(0, 1, 0)) * rotate(radians(-10.0f), vec3(1,0,0)) };
+	const mat4 susModel { glm::translate(vec3(0, 0, -3)) * rotate(radians(-time), vY) };
+	const mat4 sceneModel { glm::translate(vec3(-2, 0, -5)) * rotate(radians(245.0f), vY) * rotate(radians(-10.0f), vX) };
 
 	// drawing the among us model
 	{
@@ -94,7 +94,7 @@ void ofApp::draw()
 		/*std::vector<mat4> susModels {};
 		for (int i { 1 }; i <= 6900; ++i)
 		{
-			susModels.emplace_back(glm::translate(vec3(0, 0, -3 * i)) * rotate(radians(-time), vec3(0, 1, 0)));
+			susModels.emplace_back(translate(vec3(0, 0, -3 * i)) * rotate(radians(-time), vY));
 		}*/
 
 		/*for (unsigned int i { 0 }; i < susModels.size(); ++i)
